@@ -55,6 +55,7 @@ Files are saved to a `downloads/` folder next to the script.
 |------|---------|-------------|
 | `-o`, `--output` | `./downloads` | Folder to save files into |
 | `--format` | `mp3` | Audio format: `mp3`, `flac`, `ogg`, `opus`, `m4a` |
+| `--safemode`, `--sm` | off | Add random delays between downloads — recommended for playlists |
 
 ```
 # Save to a different folder
@@ -62,6 +63,9 @@ python votify.py <url> --output "C:\Users\You\Music"
 
 # Download as FLAC instead of MP3
 python votify.py <url> --format flac
+
+# Download a playlist safely (recommended to avoid rate limiting)
+python votify.py <playlist_url> --safemode
 ```
 
 ---

@@ -13,6 +13,8 @@ import sys
 import argparse
 import json
 import re
+import time
+import random
 from pathlib import Path
 
 # --- Dependency check ---------------------------------------------------------
@@ -198,6 +200,12 @@ def main():
         choices=["mp3", "flac", "ogg", "opus", "m4a"],
         help="Audio format (default: mp3)",
     )
+    parser.add_argument(
+        "--safemode", "--sm",
+        action="store_true",
+        dest="safemode",
+        help="Add random delays between downloads to avoid rate limiting (recommended for playlists)",
+    )
 
     args = parser.parse_args()
     output_dir = Path(args.output).resolve()
@@ -233,6 +241,8 @@ def main():
 
     print(f"Output: {output_dir}")
     print(f"Format: {args.format}")
+    if args.safemode:
+        print("Mode:   SAFE (random delays between downloads)")
     print()
 
     failed = []
@@ -248,6 +258,11 @@ def main():
         except Exception as e:
             print(f"FAILED ({e})")
             failed.append(track)
+
+        if args.safemode and i < len(tracks):
+            delay = random.uniform(5, 15)
+            print(f"  [safe mode] waiting {delay:.1f}s...", flush=True)
+            time.sleep(delay)
 
     total = len(tracks)
     ok = total - len(failed)
